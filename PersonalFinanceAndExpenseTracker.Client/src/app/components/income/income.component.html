@@ -1,0 +1,209 @@
+<div class="income-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Income</h2>
+      <p>Manage your income sources</p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        mat-stroked-button
+        title="Manage recurring income"
+        routerLink="/income/recurring">
+
+        <i class="fas fa-rotate" style="margin-right: 8px;"></i>
+        Recurring Income
+      </button>
+
+      <button
+        mat-stroked-button
+        title="Export income to Excel"
+        (click)="openExportModal()">
+
+        <i class="fas fa-file-export" style="margin-right: 8px;"></i>
+        Export
+      </button>
+
+      <button
+        mat-stroked-button
+        title="Share income history"
+        (click)="openShareModal()">
+
+        <i class="fas fa-share-nodes" style="margin-right: 8px;"></i>
+        Share
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        title="Add a new income"
+        (click)="openAddIncomeModal()">
+
+        <i class="fas fa-plus" style="margin-right: 8px;"></i>
+        Add Income
+      </button>
+
+    </div>
+  </div>
+
+  <div class="table-card">
+
+    <table>
+      <thead>
+        <tr>
+          <th class="sortable" (click)="sortBy('category')">
+            Category
+            <i class="fas"
+              [ngClass]="{
+                'fa-sort': sortColumn !== 'category',
+                'fa-sort-up': sortColumn === 'category' && sortDirection === 'asc',
+                'fa-sort-down': sortColumn === 'category' && sortDirection === 'desc'
+              }"></i>
+          </th>
+
+          <th class="amount-column sortable" (click)="sortBy('amount')">
+            Amount
+            <i class="fas"
+              [ngClass]="{
+                'fa-sort': sortColumn !== 'amount',
+                'fa-sort-up': sortColumn === 'amount' && sortDirection === 'asc',
+                'fa-sort-down': sortColumn === 'amount' && sortDirection === 'desc'
+              }"></i>
+          </th>
+
+          <th class="sortable" (click)="sortBy('trxDate')">
+            Date
+            <i class="fas"
+              [ngClass]="{
+                'fa-sort': sortColumn !== 'trxDate',
+                'fa-sort-up': sortColumn === 'trxDate' && sortDirection === 'asc',
+                'fa-sort-down': sortColumn === 'trxDate' && sortDirection === 'desc'
+              }"></i>
+          </th>
+
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let income of pagedIncomes">
+
+          <ng-container *ngIf="editingId === income.id; else viewRow">
+
+            <td>
+              <select
+                class="edit-input"
+                [(ngModel)]="editCategoryId">
+
+                <option
+                  *ngFor="let category of categories"
+                  [ngValue]="category.id">
+                  {{ category.name }}
+                </option>
+
+              </select>
+            </td>
+
+            <td class="amount-column">
+              <input
+                type="number"
+                class="edit-input"
+                [(ngModel)]="editAmount">
+            </td>
+
+            <td>
+              <input
+                type="date"
+                class="edit-input"
+                [(ngModel)]="editDate">
+            </td>
+
+            <td class="action-column">
+
+              <button
+                class="icon-btn success"
+                title="Save"
+                (click)="saveEdit(income)">
+
+                <i class="fas fa-check"></i>
+
+              </button>
+
+              <button
+                class="icon-btn"
+                title="Cancel"
+                (click)="cancelEdit()">
+
+                <i class="fas fa-xmark"></i>
+
+              </button>
+
+            </td>
+
+          </ng-container>
+
+          <ng-template #viewRow>
+
+            <td>{{ income.category }}</td>
+
+            <td class="amount-column">
+              {{ income.amount}}
+            </td>
+
+            <td>
+              {{ income.trxDate | date:'dd/MM/yyyy' }}
+            </td>
+
+            <td class="action-column">
+
+              <button
+                class="icon-btn"
+                title="Edit"
+                (click)="startEdit(income)">
+
+                <i class="fas fa-pen"></i>
+
+              </button>
+
+              <button
+                class="icon-btn danger"
+                title="Delete"
+                (click)="deleteIncome(income.id)">
+
+                <i class="fas fa-trash"></i>
+
+              </button>
+
+            </td>
+
+          </ng-template>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+    <app-pagination
+      [total]="incomes.length"
+      [page]="page"
+      [pageSize]="pageSize"
+      (pageChange)="page = $event"
+      (pageSizeChange)="onPageSizeChange($event)">
+    </app-pagination>
+
+    <div
+      *ngIf="!incomes.length"
+      class="empty-state">
+
+      <i class="fas fa-wallet"></i>
+      <h3>No income added yet</h3>
+      <p>Add your first income source.</p>
+
+    </div>
+
+  </div>
+
+</div>

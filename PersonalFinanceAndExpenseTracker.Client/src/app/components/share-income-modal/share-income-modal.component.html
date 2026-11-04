@@ -1,0 +1,73 @@
+<form *ngIf="!shareUrl"
+  class="modal-share-income"
+  [formGroup]="shareForm"
+  (ngSubmit)="generateLink()">
+
+  <h2>Share Income History</h2>
+
+  <div class="date-range">
+
+    <div class="form-group mt-4">
+      <label>Start Date</label>
+      <input type="date" formControlName="startDate">
+    </div>
+
+    <div class="form-group mt-4">
+      <label>End Date</label>
+      <input type="date" formControlName="endDate">
+    </div>
+
+  </div>
+
+  <div class="form-group mt-4">
+    <label class="checkbox-option">
+      <input type="checkbox" formControlName="setExpiration">
+      Set expiration date
+    </label>
+  </div>
+
+  <div class="form-group mt-4" *ngIf="shareForm.value.setExpiration">
+    <label>Expires On</label>
+    <input type="date" formControlName="expiresAt">
+  </div>
+
+  <p class="error-text" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="modal-actions mt-4">
+
+    <button mat-raised-button type="button" (click)="close()">
+      Cancel
+    </button>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting" class="ml-2">
+      <i class="fas fa-link"></i>
+      Generate Link
+    </button>
+
+  </div>
+
+</form>
+
+<div *ngIf="shareUrl" class="modal-share-income">
+
+  <h2>Your Shareable Link</h2>
+
+  <p class="hint-text">Anyone with this link can view this income history — no login required.</p>
+
+  <div class="form-group mt-4">
+    <div class="link-row">
+      <input type="text" [value]="shareUrl" readonly>
+      <button mat-raised-button color="primary" type="button" (click)="copyLink()">
+        <i class="fas fa-copy" style="margin-right: 8px;"></i>
+        Copy
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-actions mt-4">
+    <button mat-raised-button color="primary" type="button" (click)="close()">
+      Done
+    </button>
+  </div>
+
+</div>

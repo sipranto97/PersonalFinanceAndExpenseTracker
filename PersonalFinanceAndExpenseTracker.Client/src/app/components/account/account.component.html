@@ -1,0 +1,120 @@
+<div class="account-page">
+
+  <div class="page-header">
+    <div>
+      <h2>User Account</h2>
+      <p>Manage your profile and password</p>
+    </div>
+  </div>
+
+  <div class="account-grid">
+
+  <div class="account-card">
+
+    <h3>Profile</h3>
+
+    <div class="avatar-section mt-4">
+
+      <div class="avatar-circle">
+        <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profile picture">
+        <i *ngIf="!avatarUrl" class="fas fa-user"></i>
+      </div>
+
+      <div class="avatar-actions">
+
+        <input
+          type="file"
+          #pictureInput
+          accept="image/jpeg,image/png,image/webp"
+          style="display: none;"
+          (change)="onPictureSelected($event)">
+
+        <button
+          mat-stroked-button
+          type="button"
+          [disabled]="isUploadingPicture"
+          (click)="pictureInput.click()">
+
+          {{ isUploadingPicture ? 'Uploading...' : (avatarUrl ? 'Change Picture' : 'Upload Picture') }}
+        </button>
+
+        <button
+          mat-stroked-button
+          type="button"
+          *ngIf="avatarUrl"
+          (click)="removePicture()">
+
+          Remove
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="form-group mt-4">
+      <label>Email</label>
+      <input type="text" [value]="username" disabled>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+      <div class="form-group mt-4" [class.has-error]="isProfileInvalid('fullName')">
+        <label>Full Name</label>
+        <input type="text" formControlName="fullName">
+        <div class="error-text" *ngIf="isProfileInvalid('fullName')">Full name is required</div>
+      </div>
+
+      <div class="form-actions mt-4">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isSavingProfile">
+          {{ isSavingProfile ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="account-card password-section" *ngIf="hasPassword">
+
+    <h3>Change Password</h3>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+
+      <div class="form-group mt-4" [class.has-error]="isPasswordInvalid('currentPassword')">
+        <label>Current Password</label>
+        <input type="password" formControlName="currentPassword">
+        <div class="error-text" *ngIf="isPasswordInvalid('currentPassword')">Current password is required</div>
+      </div>
+
+      <div class="form-group mt-4" [class.has-error]="isPasswordInvalid('newPassword')">
+        <label>New Password</label>
+        <input type="password" formControlName="newPassword">
+        <div class="error-text" *ngIf="isPasswordInvalid('newPassword')">Password must be at least 8 characters</div>
+      </div>
+
+      <div class="form-group mt-4" [class.has-error]="isPasswordInvalid('confirmNewPassword') || passwordForm.errors?.['passwordMismatch']">
+        <label>Confirm New Password</label>
+        <input type="password" formControlName="confirmNewPassword">
+        <div class="error-text" *ngIf="passwordForm.errors?.['passwordMismatch'] && passwordForm.get('confirmNewPassword')?.touched">Passwords do not match</div>
+      </div>
+
+      <div class="form-actions mt-4">
+        <button mat-raised-button color="primary" class="btn-change-password" type="submit" [disabled]="isChangingPassword">
+          {{ isChangingPassword ? 'Updating...' : 'Change Password' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="account-card" *ngIf="!hasPassword">
+
+    <h3>Change Password</h3>
+    <p class="hint-text">This account signs in with Google, so there's no password to change here.</p>
+
+  </div>
+
+  </div>
+
+</div>

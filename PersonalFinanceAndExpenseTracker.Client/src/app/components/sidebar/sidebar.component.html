@@ -1,0 +1,79 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+
+  <div class="header">
+
+    <div class="logo-container">
+      <div class="logo">
+        <i class="fas fa-cube"></i>
+      </div>
+
+      <span class="app-name" *ngIf="!isCollapsed">
+        Expense Tracker
+      </span>
+    </div>
+
+    <button
+      mat-icon-button
+      class="toggle-btn"
+      type="button"
+      (click)="toggleSidebar()">
+
+      <i
+        class="fas"
+        [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'">
+      </i>
+
+    </button>
+
+  </div>
+
+  <div class="sidebar-profile" *ngIf="avatarUrl || fullName">
+
+    <div class="profile-avatar">
+      <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profile picture">
+      <i *ngIf="!avatarUrl" class="fas fa-user"></i>
+    </div>
+
+    <span class="profile-name" *ngIf="!isCollapsed">{{ fullName }}</span>
+
+  </div>
+
+  <nav class="menu">
+
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      class="menu-item"
+      [title]="isCollapsed ? item.label : ''">
+
+      <div class="menu-left">
+
+        <i [class]="item.icon"></i>
+
+        <span
+          class="menu-text"
+          *ngIf="!isCollapsed">
+          {{ item.label }}
+        </span>
+
+      </div>
+    </a>
+
+  </nav>
+
+  <div class="footer">
+
+    <button class="logout-btn" (click)="logout()">
+
+      <i class="fas fa-sign-out-alt"></i>
+
+      <span *ngIf="!isCollapsed">
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</div>

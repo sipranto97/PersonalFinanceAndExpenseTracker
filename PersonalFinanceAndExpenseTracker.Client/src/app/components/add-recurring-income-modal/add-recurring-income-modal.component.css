@@ -1,0 +1,112 @@
+/* Container (optional but recommended) */
+.form-group {
+  position: relative;
+}
+
+/* Input styling (modern upgrade) */
+input,
+select {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* 🔥 Dropdown container */
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+
+  margin-top: 6px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  min-height: 100px;
+  max-height: 220px;
+  overflow-y: auto;
+
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+/* Each item */
+.dropdown-item {
+  padding: 12px 14px;
+  cursor: pointer;
+
+  font-size: 14px;
+  color: #334155;
+
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+/* Create new category option */
+.create-category {
+  padding: 12px 14px;
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+
+  border-top: 1px solid #e2e8f0;
+
+  background: #fafafa;
+  transition: background 0.2s ease;
+}
+
+.create-category:hover {
+  background: #f1f5f9;
+}
+
+/* Smooth dropdown animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: scrollbar styling (modern browsers) */
+.dropdown-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.modal-add-income {
+    padding: 20px;
+}

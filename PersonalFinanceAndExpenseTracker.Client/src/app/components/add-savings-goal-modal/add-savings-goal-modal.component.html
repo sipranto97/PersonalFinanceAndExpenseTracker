@@ -1,0 +1,59 @@
+<form class="modal-add-savings-goal"
+  [formGroup]="goalForm"
+  (ngSubmit)="save()">
+
+  <h2>Add Savings Goal</h2>
+
+  <div class="form-group mt-4">
+
+    <label>Goal Name</label>
+
+    <input
+      type="text"
+      formControlName="name">
+
+  </div>
+
+  <div class="form-group mt-4">
+
+    <label>Target Amount</label>
+
+    <input
+      type="number"
+      formControlName="targetAmount">
+
+  </div>
+
+  <div class="form-group mt-4">
+
+    <label>Target Date</label>
+
+    <input
+      type="date"
+      formControlName="targetDate">
+
+  </div>
+
+  <div class="form-group mt-4">
+
+    <label>Monthly Contribution (optional)</label>
+
+    <input
+      type="number"
+      formControlName="monthlyContribution">
+
+  </div>
+
+  <div class="modal-actions mt-4">
+
+    <button mat-raised-button type="button" (click)="close()">
+    Cancel
+    </button>
+
+    <button mat-raised-button color="primary" type="submit" class="ml-2">
+    Save
+    </button>
+
+  </div>
+
+</form>

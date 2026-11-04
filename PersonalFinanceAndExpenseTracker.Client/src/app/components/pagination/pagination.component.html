@@ -1,0 +1,27 @@
+<div class="pagination" *ngIf="total > 0">
+
+  <div class="page-size">
+    <span>Rows per page</span>
+    <select [value]="pageSize" (change)="onPageSizeChange($event)">
+      <option *ngFor="let option of pageSizeOptions" [value]="option" [selected]="option === pageSize">{{ option }}</option>
+    </select>
+  </div>
+
+  <div class="range">{{ from }}–{{ to }} of {{ total }}</div>
+
+  <div class="pages">
+    <button type="button" class="page-btn" [disabled]="page === 1" (click)="goTo(page - 1)" title="Previous page">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <ng-container *ngFor="let p of pages">
+      <span *ngIf="p === null" class="ellipsis">…</span>
+      <button *ngIf="p !== null" type="button" class="page-btn" [class.active]="p === page" (click)="goTo(p)">{{ p }}</button>
+    </ng-container>
+
+    <button type="button" class="page-btn" [disabled]="page === totalPages" (click)="goTo(page + 1)" title="Next page">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+</div>

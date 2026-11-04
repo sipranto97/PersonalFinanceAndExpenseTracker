@@ -1,0 +1,110 @@
+<div class="income-page">
+
+  <a class="back-link" routerLink="/expense">
+    <i class="fas fa-arrow-left"></i>
+    Back to Expense
+  </a>
+
+  <div class="page-header">
+    <div>
+      <h2>Recurring Expense</h2>
+      <p>Automatically generate expense entries every month</p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        mat-raised-button
+        color="primary"
+        title="Add a new recurring expense"
+        (click)="openAddModal()">
+
+        <i class="fas fa-plus" style="margin-right: 8px;"></i>
+        Add Recurring Expense
+      </button>
+
+    </div>
+  </div>
+
+  <div class="table-card">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th class="amount-column">Amount</th>
+          <th>Day of Month</th>
+          <th>Status</th>
+          <th>Last Generated</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let recurringExpense of recurringExpenses">
+
+          <td>{{ recurringExpense.category }}</td>
+
+          <td class="amount-column">
+            {{ recurringExpense.amount }}
+          </td>
+
+          <td>{{ recurringExpense.dayOfMonth }}</td>
+
+          <td>
+            <span class="status-badge" [class.active]="recurringExpense.isActive" [class.cancelled]="!recurringExpense.isActive">
+              {{ recurringExpense.isActive ? 'Active' : 'Cancelled' }}
+            </span>
+          </td>
+
+          <td>
+            {{ recurringExpense.lastGeneratedOn ? (recurringExpense.lastGeneratedOn | date:'dd/MM/yyyy') : '—' }}
+          </td>
+
+          <td class="action-column">
+
+            <ng-container *ngIf="recurringExpense.isActive; else noActions">
+
+              <button
+                class="icon-btn"
+                title="Edit"
+                (click)="openEditModal(recurringExpense)">
+
+                <i class="fas fa-pen"></i>
+
+              </button>
+
+              <button
+                class="icon-btn danger"
+                title="Cancel"
+                (click)="cancelRecurringExpense(recurringExpense.id)">
+
+                <i class="fas fa-ban"></i>
+
+              </button>
+
+            </ng-container>
+
+            <ng-template #noActions>—</ng-template>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div
+      *ngIf="!recurringExpenses.length"
+      class="empty-state">
+
+      <i class="fas fa-rotate"></i>
+      <h3>No recurring expense set up yet</h3>
+      <p>Add a recurring expense to automate monthly entries.</p>
+
+    </div>
+
+  </div>
+
+</div>

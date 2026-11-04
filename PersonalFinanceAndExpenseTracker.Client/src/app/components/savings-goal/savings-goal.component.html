@@ -1,0 +1,143 @@
+<div class="savings-goal-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Savings Goals</h2>
+      <p>Set targets and track your progress</p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        mat-raised-button
+        color="primary"
+        title="Add a new savings goal"
+        (click)="openAddGoalModal()">
+
+        <i class="fas fa-plus" style="margin-right: 8px;"></i>
+        Add Goal
+      </button>
+
+    </div>
+  </div>
+
+  <div class="goals-grid" *ngIf="goals.length">
+
+    <div class="goal-card" *ngFor="let goal of goals">
+
+      <div class="goal-card-header">
+        <h3>{{ goal.name }}</h3>
+        <span class="status-badge" [ngClass]="goal.status.toLowerCase()">{{ goal.status }}</span>
+      </div>
+
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" [style.width.%]="goal.percentageProgress"></div>
+      </div>
+
+      <div class="goal-progress-pct">{{ goal.percentageProgress }}% complete</div>
+
+      <div class="pace-indicator" *ngIf="goal.paceStatus" [ngClass]="goal.paceStatus.toLowerCase()">
+        <ng-container [ngSwitch]="goal.paceStatus">
+          <span *ngSwitchCase="'Ahead'">{{ goal.paceDifference }} ahead of pace</span>
+          <span *ngSwitchCase="'Behind'">{{ -goal.paceDifference! }} behind pace</span>
+          <span *ngSwitchDefault>On track</span>
+        </ng-container>
+      </div>
+
+      <div class="goal-stats">
+
+        <div class="goal-stat">
+          <span>Saved</span>
+          <strong>{{ goal.amountSaved }}</strong>
+        </div>
+
+        <div class="goal-stat">
+          <span>Remaining</span>
+          <strong>{{ goal.remainingAmount }}</strong>
+        </div>
+
+        <div class="goal-stat">
+          <span>Target</span>
+          <strong>{{ goal.targetAmount }}</strong>
+        </div>
+
+        <div class="goal-stat">
+          <span>Target Date</span>
+          <strong>{{ goal.targetDate | date:'dd/MM/yyyy' }}</strong>
+        </div>
+
+      </div>
+
+      <div class="goal-actions" *ngIf="goal.status === 'Active'">
+
+        <input
+          type="number"
+          placeholder="Amount"
+          class="contribute-input w-50"
+          [(ngModel)]="contributionAmounts[goal.id]">
+
+        <button
+          mat-stroked-button
+          title="Add contribution"
+          (click)="contribute(goal)">
+
+          <i class="fas fa-piggy-bank" style="margin-right: 8px;"></i>
+          Contribute
+        </button>
+
+      </div>
+
+      <div class="goal-actions" *ngIf="goal.status === 'Completed'">
+
+        <button
+          mat-stroked-button
+          title="Add saved amount back to your balance"
+          (click)="settle(goal, 'AddToBalance')">
+
+          Add to Balance
+        </button>
+
+        <button
+          mat-stroked-button
+          title="Mark the saved amount as spent on this goal"
+          (click)="settle(goal, 'Expense')">
+
+          Mark as Spent
+        </button>
+
+      </div>
+
+      <div class="goal-footer" *ngIf="goal.status === 'Active' && !goal.amountSaved">
+
+        <button
+          class="icon-btn danger"
+          title="Delete"
+          (click)="deleteGoal(goal.id)">
+
+          <i class="fas fa-trash"></i>
+
+        </button>
+
+      </div>
+
+      <div class="goal-footer" *ngIf="goal.status === 'Settled'">
+        <span class="settled-note">
+          {{ goal.settlementAction === 'AddedToBalance' ? 'Added back to balance' : 'Spent on goal' }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="!goals.length"
+    class="empty-state">
+
+    <i class="fas fa-bullseye"></i>
+    <h3>No savings goals yet</h3>
+    <p>Create your first savings goal.</p>
+
+  </div>
+
+</div>

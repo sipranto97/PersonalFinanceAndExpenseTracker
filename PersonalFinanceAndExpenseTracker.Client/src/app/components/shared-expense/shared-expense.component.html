@@ -1,0 +1,52 @@
+<div class="shared-income-page">
+
+  <div *ngIf="isLoading" class="state-card">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading expense history...</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="state-card">
+    <i class="fas fa-triangle-exclamation"></i>
+    <h3>{{ errorMessage }}</h3>
+  </div>
+
+  <div *ngIf="!isLoading && history" class="content-card">
+
+    <div class="page-header">
+      <h2>Expense History</h2>
+      <p>Shared by {{ history.ownerName }}</p>
+      <p class="date-range-text">
+        {{ history.startDate | date:'dd/MM/yyyy' }} — {{ history.endDate | date:'dd/MM/yyyy' }}
+      </p>
+    </div>
+
+    <div class="table-card">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th class="amount-column">Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let expense of history.expenses">
+            <td>{{ expense.category }}</td>
+            <td class="amount-column">{{ expense.amount }}</td>
+            <td>{{ expense.trxDate | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!history.expenses.length" class="empty-state">
+        <i class="fas fa-money-bill-wave"></i>
+        <h3>No expense in this date range</h3>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

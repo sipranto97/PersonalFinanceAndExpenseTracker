@@ -1,0 +1,66 @@
+<div class="page">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">
+        <i class="fas fa-cube"></i>
+      </div>
+      <span class="brand-name">Personal Finance And Expense Tracker</span>
+    </div>
+
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to your account to continue</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="field" [class.has-error]="isInvalid('email')">
+        <label for="email">Email address</label>
+        <input type="email" id="email" formControlName="email" placeholder="you@example.com" />
+        <div class="error">Please enter a valid email address</div>
+      </div>
+
+      <div class="field" [class.has-error]="isInvalid('password')">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input [type]="showPassword ? 'text' : 'password'" id="password"
+            formControlName="password" placeholder="••••••••" />
+          <button class="eye-btn" type="button" (click)="showPassword = !showPassword">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="error">Password must be at least 8 characters</div>
+      </div>
+
+      <div class="row">
+        <label class="remember">
+          <input type="checkbox" formControlName="remember" /> Remember me
+        </label>
+        <a routerLink="/forgot-password" class="forgot">Forgot password?</a>
+      </div>
+
+      <button mat-raised-button color="primary" style="width: 100%; margin-bottom: 1.25rem;" type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </form>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">or</span>
+      <div class="divider-line"></div>
+    </div>
+
+     <div class="row">
+        <app-sign-in-button-google
+            class="w-100"
+            variant="light"
+            label="Sign in with Google"
+            (clicked)="loginWithGoogle()">
+        </app-sign-in-button-google>
+    </div> 
+
+    <p class="signup">Don't have an account? <a routerLink="/register">Create one</a></p>
+  </div>
+</div>
+

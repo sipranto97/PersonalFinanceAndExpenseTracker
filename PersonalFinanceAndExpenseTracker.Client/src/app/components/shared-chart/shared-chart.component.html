@@ -1,0 +1,33 @@
+<div class="shared-chart-page">
+
+  <div *ngIf="isLoading" class="state-card">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading chart...</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="state-card">
+    <i class="fas fa-triangle-exclamation"></i>
+    <h3>{{ errorMessage }}</h3>
+  </div>
+
+  <div *ngIf="!isLoading && data" class="content-card">
+
+    <div class="page-header">
+      <h2>{{ data.chartType }} Chart</h2>
+      <p>Shared by {{ data.ownerName }}</p>
+      <p class="date-range-text">
+        {{ data.startDate | date:'dd/MM/yyyy' }} — {{ data.endDate | date:'dd/MM/yyyy' }}
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <canvas *ngIf="chartConfig" baseChart
+        [type]="chartConfig.type"
+        [data]="chartConfig.data"
+        [options]="chartConfig.options">
+      </canvas>
+    </div>
+
+  </div>
+
+</div>

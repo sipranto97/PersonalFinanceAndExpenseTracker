@@ -1,0 +1,110 @@
+<div class="income-page">
+
+  <a class="back-link" routerLink="/income">
+    <i class="fas fa-arrow-left"></i>
+    Back to Income
+  </a>
+
+  <div class="page-header">
+    <div>
+      <h2>Recurring Income</h2>
+      <p>Automatically generate income entries every month</p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        mat-raised-button
+        color="primary"
+        title="Add a new recurring income"
+        (click)="openAddModal()">
+
+        <i class="fas fa-plus" style="margin-right: 8px;"></i>
+        Add Recurring Income
+      </button>
+
+    </div>
+  </div>
+
+  <div class="table-card">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th class="amount-column">Amount</th>
+          <th>Day of Month</th>
+          <th>Status</th>
+          <th>Last Generated</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let recurringIncome of recurringIncomes">
+
+          <td>{{ recurringIncome.category }}</td>
+
+          <td class="amount-column">
+            {{ recurringIncome.amount }}
+          </td>
+
+          <td>{{ recurringIncome.dayOfMonth }}</td>
+
+          <td>
+            <span class="status-badge" [class.active]="recurringIncome.isActive" [class.cancelled]="!recurringIncome.isActive">
+              {{ recurringIncome.isActive ? 'Active' : 'Cancelled' }}
+            </span>
+          </td>
+
+          <td>
+            {{ recurringIncome.lastGeneratedOn ? (recurringIncome.lastGeneratedOn | date:'dd/MM/yyyy') : '—' }}
+          </td>
+
+          <td class="action-column">
+
+            <ng-container *ngIf="recurringIncome.isActive; else noActions">
+
+              <button
+                class="icon-btn"
+                title="Edit"
+                (click)="openEditModal(recurringIncome)">
+
+                <i class="fas fa-pen"></i>
+
+              </button>
+
+              <button
+                class="icon-btn danger"
+                title="Cancel"
+                (click)="cancelRecurringIncome(recurringIncome.id)">
+
+                <i class="fas fa-ban"></i>
+
+              </button>
+
+            </ng-container>
+
+            <ng-template #noActions>—</ng-template>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div
+      *ngIf="!recurringIncomes.length"
+      class="empty-state">
+
+      <i class="fas fa-rotate"></i>
+      <h3>No recurring income set up yet</h3>
+      <p>Add a recurring income to automate monthly entries.</p>
+
+    </div>
+
+  </div>
+
+</div>

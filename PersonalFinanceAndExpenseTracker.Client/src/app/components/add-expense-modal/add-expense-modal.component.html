@@ -1,0 +1,75 @@
+<form class="modal-add-income"
+  [formGroup]="expenseForm"
+  (ngSubmit)="save()">
+
+  <h2>Add Expense</h2>
+
+  <div class="form-group mt-4" #dropdownContainer>
+
+    <label>Category</label>
+
+    <!-- Search input -->
+  <input
+    type="text"
+    placeholder="Search category..."
+    [(ngModel)]="searchText"
+    [ngModelOptions]="{ standalone: true }"
+    (input)="filterCategories()"
+    (focus)="openDropdown()"
+    class="form-control"
+  />
+
+  <!-- Dropdown -->
+  <div class="dropdown-list" *ngIf="showDropdown">
+    <div
+      *ngFor="let category of filteredCategories"
+      (click)="selectCategory(category)"
+      class="dropdown-item"
+    >
+      {{ category.name }}
+    </div>
+
+    <div
+      *ngIf="filteredCategories.length === 0 && searchText"
+      class="create-category"
+      (click)="createCategory(searchText)"
+    >
+      + Create "{{ searchText }}"
+    </div>
+  </div>
+
+  </div>
+
+  <div class="form-group mt-4">
+
+    <label>Amount</label>
+
+    <input
+      type="number"
+      formControlName="amount">
+
+  </div>
+
+  <div class="form-group mt-4">
+
+    <label>Date</label>
+
+    <input
+      type="date"
+      formControlName="date">
+
+  </div>
+
+  <div class="modal-actions mt-4">
+
+    <button mat-raised-button type="button" (click)="close()">
+    Cancel
+    </button>
+
+    <button mat-raised-button color="primary" type="submit" class="ml-2">
+    Save
+    </button>
+
+  </div>
+
+</form>

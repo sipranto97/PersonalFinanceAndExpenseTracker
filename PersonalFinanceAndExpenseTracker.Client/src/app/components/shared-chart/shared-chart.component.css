@@ -1,0 +1,70 @@
+.shared-chart-page {
+  min-height: 100vh;
+  padding: 48px 24px;
+
+  display: flex;
+  justify-content: center;
+
+  background: #f8fafc;
+}
+
+.state-card {
+  align-self: flex-start;
+  margin-top: 80px;
+
+  text-align: center;
+
+  i {
+    font-size: 40px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    color: #334155;
+  }
+
+  p {
+    color: #64748b;
+  }
+}
+
+.content-card {
+  width: 100%;
+  max-width: 900px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .date-range-text {
+    color: #2563eb;
+    font-weight: 600;
+  }
+}
+
+.chart-card {
+  background: white;
+
+  border-radius: 20px;
+  padding: 24px;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.04),
+    0 12px 24px rgba(15, 23, 42, 0.06);
+
+  height: 420px;
+}
