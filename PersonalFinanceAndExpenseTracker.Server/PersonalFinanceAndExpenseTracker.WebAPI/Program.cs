@@ -224,13 +224,15 @@ app.Use(async (context, next) =>
 
 app.MapControllers();
 
-RecurringJob.AddOrUpdate<RecurringIncomeJobService>(
+var recurringJobManager = app.Services.GetRequiredService<IRecurringJobManager>();
+
+recurringJobManager.AddOrUpdate<RecurringIncomeJobService>(
     "generate-recurring-incomes",
     service => service.GenerateDueIncomes(),
     Cron.Daily(2, 15),
     new RecurringJobOptions { TimeZone = TimeZoneInfo.Local });
 
-RecurringJob.AddOrUpdate<RecurringExpenseJobService>(
+recurringJobManager.AddOrUpdate<RecurringExpenseJobService>(
     "generate-recurring-expenses",
     service => service.GenerateDueExpenses(),
     Cron.Daily(2, 15),
