@@ -135,6 +135,17 @@ builder.Services.AddAuthentication(item =>
 
 var app = builder.Build();
 
+// Render terminates TLS at its proxy and forwards plain HTTP; trust the
+// forwarded headers so Request.IsHttps and the client IP are correct.
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor
+        | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
