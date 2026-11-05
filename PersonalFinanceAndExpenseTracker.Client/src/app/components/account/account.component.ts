@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +11,7 @@ import { AccountService } from '../../services/account.service';
     standalone: false
 })
 export class AccountComponent implements OnInit {
-  private readonly backendOrigin = 'https://localhost:44321';
+  private readonly backendOrigin = environment.apiOrigin;
 
   username: string = '';
   hasPassword: boolean = true;

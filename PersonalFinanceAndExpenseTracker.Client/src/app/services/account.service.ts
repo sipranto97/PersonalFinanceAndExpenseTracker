@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
@@ -11,7 +12,7 @@ export interface ProfileUpdate {
   providedIn: 'root'
 })
 export class AccountService {
-  private baseUrl = 'https://localhost:44321/api';
+  private baseUrl = environment.apiOrigin + '/api';
 
   private profileUpdated = new Subject<ProfileUpdate>();
   profileUpdated$ = this.profileUpdated.asObservable();

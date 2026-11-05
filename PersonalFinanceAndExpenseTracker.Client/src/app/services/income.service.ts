@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
@@ -7,7 +8,7 @@ import { Income } from "../models/income.model";
   providedIn: 'root'
 })
 export class IncomeService {
-  private baseUrl = 'https://localhost:44321/api';
+  private baseUrl = environment.apiOrigin + '/api';
 
   constructor(private http: HttpClient) {}
 

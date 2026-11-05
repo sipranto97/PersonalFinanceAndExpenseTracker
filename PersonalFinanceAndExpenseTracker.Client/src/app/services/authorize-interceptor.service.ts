@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import {
   HttpEvent,
@@ -22,7 +23,7 @@ export class AuthorizeInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) {}
 
-  private readonly apiOrigin = 'https://localhost:44321';
+  private readonly apiOrigin = environment.apiOrigin;
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

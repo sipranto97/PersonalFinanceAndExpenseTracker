@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from '../../models/menuitem.model';
 import { Router } from '@angular/router';
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
     standalone: false
 })
 export class SidebarComponent implements OnInit {
-  private readonly backendOrigin = 'https://localhost:44321';
+  private readonly backendOrigin = environment.apiOrigin;
 
   isCollapsed = false;
   avatarUrl: string | null = null;

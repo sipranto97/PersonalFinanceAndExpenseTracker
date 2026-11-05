@@ -1,3 +1,4 @@
+import { environment } from '../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, switchMap, tap } from "rxjs";
@@ -13,7 +14,7 @@ const LOGGED_IN_FLAG = 'is_logged_in';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://localhost:44321/api';
+  private baseUrl = environment.apiOrigin + '/api';
 
   private csrfToken: string | null = null;
   private currentUsername: string | null = null;
