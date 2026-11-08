@@ -5,7 +5,7 @@ export const googleAuthConfig: AuthConfig = {
   strictDiscoveryDocumentValidation: false,
 
   redirectUri: window.location.origin + '/signin-google',
-  clientId: '',
+  clientId: '893618120730-0bhgi3euf0vs2hul151erhtjpopgner4.apps.googleusercontent.com',
   scope: 'openid profile email',
   
   customQueryParams: {
