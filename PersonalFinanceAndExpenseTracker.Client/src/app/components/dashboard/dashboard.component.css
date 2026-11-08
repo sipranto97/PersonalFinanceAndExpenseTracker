@@ -278,3 +278,61 @@
   color: #94a3b8;
   font-size: 13px;
 }
+
+/* Phone */
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 0;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .summary-tile {
+    padding: 18px 20px;
+  }
+
+  .summary-label {
+    font-size: 14px;
+  }
+
+  .summary-value {
+    font-size: 28px;
+  }
+
+  .pie-section {
+    max-width: none;
+    margin-top: 20px;
+  }
+
+  .pie-header h4 {
+    font-size: 16px;
+  }
+
+  .chart-card {
+    height: 320px;
+    padding: 10px;
+  }
+
+  .currency-prompt {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .currency-prompt-controls {
+    flex-wrap: wrap;
+  }
+
+  .currency-prompt-controls select {
+    flex: 1 1 160px;
+    min-width: 0;
+  }
+
+  .goals-row .goal-mini-card {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}

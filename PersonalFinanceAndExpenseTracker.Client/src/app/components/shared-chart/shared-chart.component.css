@@ -68,3 +68,10 @@
 
   height: 420px;
 }
+
+/* Phone */
+@media (max-width: 600px) {
+  .shared-chart-page {
+    padding: 24px 12px;
+  }
+}

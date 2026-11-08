@@ -213,3 +213,114 @@ tbody tr:hover {
     color: #64748b;
   }
 }
+
+/* Phone: keep the table, but tighter, and let text wrap onto several lines */
+@media (max-width: 768px) {
+  .income-page {
+    padding: 0;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .header-actions > button,
+  .header-actions > a {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 0;
+  }
+
+  /* Material's wide padding and letter-spacing make "Recurring Income" wrap; keep labels on one line. */
+  .header-actions > button,
+  .header-actions > a {
+    padding: 0 10px;
+    font-size: 13px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .table-card {
+    border-radius: 14px;
+    /* Safety net: scrolls sideways instead of breaking the page if a row is ever too wide. */
+    overflow-x: auto;
+  }
+
+  th,
+  td {
+    padding: 10px 6px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  th {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left: 10px;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 10px;
+  }
+
+  /* Category wraps onto extra lines; amounts only wrap at spaces so digits never split. */
+  td:not(.amount-column) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .amount-column {
+    overflow-wrap: normal;
+  }
+
+  /* Dates stay on one line (breaking 08/11/2026 mid-number is unreadable); category absorbs the slack. */
+  td:nth-child(3),
+  th:nth-child(3) {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  /* Edit/Delete stay side by side and don't steal width from the data. */
+  td.action-column,
+  th.action-column {
+    width: 1%;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .icon-btn + .icon-btn {
+    margin-left: 4px;
+  }
+
+  .edit-input {
+    min-width: 0;
+    height: 34px;
+    padding: 0 6px;
+  }
+
+  .empty-state {
+    padding: 48px 16px;
+  }
+}

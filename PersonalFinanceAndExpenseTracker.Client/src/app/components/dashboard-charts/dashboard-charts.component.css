@@ -118,3 +118,23 @@
 
   height: 300px;
 }
+
+/* Phone */
+@media (max-width: 768px) {
+  .charts-page {
+    padding: 0;
+  }
+
+  .chart-card {
+    height: 280px;
+    padding: 10px;
+  }
+
+  .chart-controls .range-select {
+    flex: 1 1 auto;
+  }
+
+  .custom-range-row {
+    flex-wrap: wrap;
+  }
+}

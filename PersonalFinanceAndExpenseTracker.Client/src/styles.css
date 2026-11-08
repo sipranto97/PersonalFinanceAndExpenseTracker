@@ -233,3 +233,37 @@ h1 {
   margin-left: 20px;
 }
 
+
+/* ---------- Phone / small tablet ---------- */
+@media (max-width: 768px) {
+  /* 16px+ stops iOS Safari from zooming the page when an input is focused. */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Auth pages: less padding so the card uses the screen. */
+  .page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 1.5rem 1.25rem;
+    margin: auto;
+  }
+}
+
+/* Material dialogs: use most of a phone's width instead of the default 80vw. */
+@media (max-width: 600px) {
+  .cdk-overlay-pane.mat-mdc-dialog-panel {
+    max-width: 94vw !important;
+  }
+
+  .mat-mdc-dialog-content {
+    max-height: 70vh;
+  }
+}

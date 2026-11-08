@@ -1,6 +1,33 @@
-<div class="layout">
+<div class="layout" [class.mobile]="isMobile">
 
-  <app-sidebar *ngIf="!hideChrome"></app-sidebar>
+  <header class="topbar" *ngIf="isMobile && !hideChrome">
+    <button
+      type="button"
+      class="menu-btn"
+      aria-label="Open menu"
+      (click)="mobileNavOpen = true">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="topbar-logo">
+      <i class="fas fa-cube"></i>
+    </div>
+
+    <span class="topbar-title">Expense Tracker</span>
+  </header>
+
+  <div
+    class="backdrop"
+    *ngIf="isMobile && mobileNavOpen && !hideChrome"
+    (click)="mobileNavOpen = false">
+  </div>
+
+  <app-sidebar
+    *ngIf="!hideChrome"
+    [isMobile]="isMobile"
+    [mobileOpen]="mobileNavOpen"
+    (closeMenu)="mobileNavOpen = false">
+  </app-sidebar>
 
   <div class="content">
     <router-outlet></router-outlet>

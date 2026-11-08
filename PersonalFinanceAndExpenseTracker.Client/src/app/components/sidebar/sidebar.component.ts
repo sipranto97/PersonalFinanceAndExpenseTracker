@@ -1,5 +1,5 @@
 import { environment } from '../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from '../../models/menuitem.model';
 import { Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
@@ -13,6 +13,11 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   private readonly backendOrigin = environment.apiOrigin;
+
+  /** Phone layout: the sidebar becomes a slide-out drawer opened from the top bar. */
+  @Input() isMobile = false;
+  @Input() mobileOpen = false;
+  @Output() closeMenu = new EventEmitter<void>();
 
   isCollapsed = false;
   avatarUrl: string | null = null;
@@ -81,6 +86,11 @@ export class SidebarComponent implements OnInit {
     return url.startsWith('/') ? `${this.backendOrigin}${url}` : url;
   }
 
+  // The icon-only collapsed state is a desktop feature; the drawer always shows labels.
+  get collapsed(): boolean {
+    return this.isCollapsed && !this.isMobile;
+  }
+
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
   }
@@ -90,6 +100,7 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
+    this.closeMenu.emit();
     this.authService.logout().subscribe({
       next: () => this.router.navigate(["/sign-in"]),
       error: () => this.router.navigate(["/sign-in"])

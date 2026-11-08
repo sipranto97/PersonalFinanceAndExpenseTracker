@@ -168,3 +168,20 @@ input:disabled {
 .btn-change-password {
   margin-top: 33px;
 }
+
+/* Phone */
+@media (max-width: 768px) {
+  .account-page {
+    padding: 0;
+  }
+
+  .avatar-section {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .avatar-circle {
+    width: 84px;
+    height: 84px;
+  }
+}
