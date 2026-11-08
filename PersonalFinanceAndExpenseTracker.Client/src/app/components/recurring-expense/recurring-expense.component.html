@@ -47,7 +47,7 @@
           <td>{{ recurringExpense.category }}</td>
 
           <td class="amount-column">
-            {{ recurringExpense.amount }}
+            {{ recurringExpense.amount | appCurrency }}
           </td>
 
           <td>{{ recurringExpense.dayOfMonth }}</td>

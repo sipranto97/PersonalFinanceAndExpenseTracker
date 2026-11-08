@@ -27,6 +27,8 @@ namespace PersonalFinanceAndExpenseTracker.Services
             var hasher = new PasswordHasher<object>();
 
             user.Role = "User";
+            user.Currency = SupportedCurrencies.Normalize(user.Currency);
+            user.NeedsCurrencySetup = false;
             user.Password = hasher.HashPassword(null, user.Password);
 
             await _dbContext.UserAccounts.AddAsync(user);

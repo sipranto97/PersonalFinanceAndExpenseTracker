@@ -36,7 +36,7 @@ namespace PersonalFinanceAndExpenseTracker.WebAPI.Controllers
             if (validGoogleUser == null)
                 return Unauthorized();
 
-            var user = _tokenService.FindOrCreateUserByGoogleId(validGoogleUser.JwtId, validGoogleUser.Email, validGoogleUser.GivenName, validGoogleUser.FamilyName, validGoogleUser.Picture);
+            var user = _tokenService.FindOrCreateUserByGoogleId(validGoogleUser.JwtId, validGoogleUser.Email, validGoogleUser.GivenName, validGoogleUser.FamilyName, validGoogleUser.Picture, model.Currency);
 
             var accessToken = _tokenService.GenerateAccessToken(user);
             var refreshToken = _tokenService.GenerateRefreshToken(user.Id);

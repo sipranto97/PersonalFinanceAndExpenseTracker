@@ -29,6 +29,15 @@
         <div class="error">Please enter a valid email address</div>
       </div>
 
+      <!-- Currency -->
+      <div class="field" [class.has-error]="isInvalid('currency')">
+        <label for="currency">Currency</label>
+        <select id="currency" formControlName="currency">
+          <option *ngFor="let c of currencies" [value]="c.code">{{ c.code }} - {{ c.name }}</option>
+        </select>
+        <div class="error">Please select a currency</div>
+      </div>
+
       <!-- Password -->
       <div class="field" [class.has-error]="isInvalid('password')">
         <label for="password">Password</label>

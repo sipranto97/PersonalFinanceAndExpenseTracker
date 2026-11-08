@@ -23,6 +23,12 @@ namespace PersonalFinanceAndExpenseTracker.Domain.Configs
 
             entity.Property(u => u.Role);
 
+            entity.Property(u => u.Currency)
+                .IsRequired()
+                .HasMaxLength(3);
+
+            entity.Property(u => u.NeedsCurrencySetup);
+
             entity.HasIndex(u => u.Username);
 
         }

@@ -64,6 +64,15 @@
         <div class="error-text" *ngIf="isProfileInvalid('fullName')">Full name is required</div>
       </div>
 
+      <div class="form-group mt-4" [class.has-error]="isProfileInvalid('currency')">
+        <label>Currency</label>
+        <select formControlName="currency">
+          <option *ngFor="let c of currencies" [value]="c.code">{{ c.code }} - {{ c.name }}</option>
+        </select>
+        <div class="hint-text">Only changes how amounts are displayed. Existing amounts are not converted.</div>
+        <div class="error-text" *ngIf="isProfileInvalid('currency')">Currency is required</div>
+      </div>
+
       <div class="form-actions mt-4">
         <button mat-raised-button color="primary" type="submit" [disabled]="isSavingProfile">
           {{ isSavingProfile ? 'Saving...' : 'Save Changes' }}

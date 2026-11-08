@@ -1,0 +1,52 @@
+<div class="charts-page">
+
+  <div class="page-header">
+    <h3>Dashboard Charts</h3>
+    <a routerLink="/dashboard" class="back-link">&larr; Back to Dashboard</a>
+  </div>
+
+  <div class="charts-row">
+
+    <div class="chart-section" *ngFor="let section of sections">
+
+      <div class="chart-header">
+
+        <h4>{{ section.title }}</h4>
+
+        <div class="chart-controls">
+
+          <select
+            class="range-select"
+            [(ngModel)]="section.range"
+            (ngModelChange)="onRangeChange(section)">
+            <option *ngFor="let option of rangeOptions" [value]="option.key">{{ option.label }}</option>
+          </select>
+
+          <button type="button" class="share-btn" title="Share" (click)="openShareModal(section)">
+            <i class="fas fa-share-nodes"></i>
+          </button>
+
+        </div>
+
+        <ng-container *ngIf="section.range === 'custom'">
+          <div class="custom-range-row">
+            <input type="date" [(ngModel)]="section.customStart" (change)="onRangeChange(section)">
+            <input type="date" [(ngModel)]="section.customEnd" (change)="onRangeChange(section)">
+          </div>
+        </ng-container>
+
+      </div>
+
+      <div class="chart-card">
+        <canvas *ngIf="section.config" baseChart
+          [type]="section.config.type"
+          [data]="section.config.data"
+          [options]="section.config.options">
+        </canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

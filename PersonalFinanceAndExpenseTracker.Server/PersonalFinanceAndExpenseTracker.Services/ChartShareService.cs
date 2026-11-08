@@ -83,6 +83,7 @@ namespace PersonalFinanceAndExpenseTracker.Services
             var response = new SharedChartDataResponseModel
             {
                 OwnerName = !string.IsNullOrWhiteSpace(owner.FullName) ? owner.FullName : owner.Username,
+                Currency = owner.Currency,
                 ChartType = shareLink.ChartType,
                 StartDate = shareLink.StartDate,
                 EndDate = shareLink.EndDate,

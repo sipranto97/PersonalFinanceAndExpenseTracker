@@ -48,17 +48,17 @@
 
         <div class="goal-stat">
           <span>Saved</span>
-          <strong>{{ goal.amountSaved }}</strong>
+          <strong>{{ goal.amountSaved | appCurrency }}</strong>
         </div>
 
         <div class="goal-stat">
           <span>Remaining</span>
-          <strong>{{ goal.remainingAmount }}</strong>
+          <strong>{{ goal.remainingAmount | appCurrency }}</strong>
         </div>
 
         <div class="goal-stat">
           <span>Target</span>
-          <strong>{{ goal.targetAmount }}</strong>
+          <strong>{{ goal.targetAmount | appCurrency }}</strong>
         </div>
 
         <div class="goal-stat">

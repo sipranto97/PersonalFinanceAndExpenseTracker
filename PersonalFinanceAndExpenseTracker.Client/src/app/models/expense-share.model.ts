@@ -12,6 +12,7 @@ export interface SharedExpenseItem {
 
 export interface SharedExpenseHistory {
   ownerName: string;
+  currency: string;
   startDate: Date;
   endDate: Date;
   expiresAt: Date | null;

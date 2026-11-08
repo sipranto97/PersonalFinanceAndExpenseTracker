@@ -97,7 +97,7 @@ namespace PersonalFinanceAndExpenseTracker.Services.Authentication
                 _context.SaveChanges();
             }
         }
-        public UserAccount FindOrCreateUserByGoogleId(string googleId, string email, string fName, string lName, string pictureUrl)
+        public UserAccount FindOrCreateUserByGoogleId(string googleId, string email, string fName, string lName, string pictureUrl, string? currencyHint = null)
         {
             var user = _context.UserAccounts.FirstOrDefault(u => u.Username == email);
 
@@ -109,7 +109,11 @@ namespace PersonalFinanceAndExpenseTracker.Services.Authentication
                     GoogleId = googleId,
                     Username = email,
                     Role = "User",
-                    ProfilePictureUrl = pictureUrl
+                    ProfilePictureUrl = pictureUrl,
+                    // Google sign-in has no sign-up form, so the currency is a guess from
+                    // the browser locale. The user confirms or changes it on first visit.
+                    Currency = SupportedCurrencies.Normalize(currencyHint),
+                    NeedsCurrencySetup = true
                 };
                 _context.UserAccounts.Add(newUser);
                 _context.SaveChanges();

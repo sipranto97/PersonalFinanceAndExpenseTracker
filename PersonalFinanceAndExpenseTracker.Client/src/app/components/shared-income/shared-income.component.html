@@ -34,7 +34,7 @@
         <tbody>
           <tr *ngFor="let income of history.incomes">
             <td>{{ income.category }}</td>
-            <td class="amount-column">{{ income.amount }}</td>
+            <td class="amount-column">{{ income.amount | appCurrency: history.currency }}</td>
             <td>{{ income.trxDate | date:'dd/MM/yyyy' }}</td>
           </tr>
         </tbody>

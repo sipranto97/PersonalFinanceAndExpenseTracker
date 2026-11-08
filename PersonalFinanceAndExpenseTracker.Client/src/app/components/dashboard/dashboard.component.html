@@ -2,65 +2,57 @@
 
   <h3>Dashboard</h3>
 
+  <div class="currency-prompt" *ngIf="showCurrencyPrompt">
+    <div class="currency-prompt-text">
+      <strong>Confirm your currency</strong>
+      <span>We picked <b>{{ currencyCode }}</b> based on your region. Amounts are only displayed in this currency, never converted.</span>
+    </div>
+
+    <div class="currency-prompt-controls">
+      <select [ngModel]="selectedCurrency ?? currencyCode" (ngModelChange)="selectedCurrency = $event">
+        <option *ngFor="let c of currencies" [value]="c.code">{{ c.code }} - {{ c.name }}</option>
+      </select>
+
+      <button type="button" class="currency-confirm-btn" [disabled]="isSavingCurrency" (click)="confirmCurrency()">
+        {{ isSavingCurrency ? 'Saving...' : 'Confirm' }}
+      </button>
+    </div>
+  </div>
+
   <div class="summary-grid">
 
     <div class="summary-tile">
       <span class="summary-label">Total Income</span>
-      <strong class="summary-value income">{{ totalIncome }}</strong>
+      <strong class="summary-value income">{{ totalIncome | appCurrency }}</strong>
     </div>
 
     <div class="summary-tile">
       <span class="summary-label">Total Expenses</span>
-      <strong class="summary-value expense">{{ totalExpense }}</strong>
+      <strong class="summary-value expense">{{ totalExpense | appCurrency }}</strong>
     </div>
 
     <div class="summary-tile">
       <span class="summary-label">Current Balance</span>
-      <strong class="summary-value" [ngClass]="{ 'balance': balance >= 0, 'expense': balance < 0 }">{{ balance }}</strong>
+      <strong class="summary-value" [ngClass]="{ 'balance': balance >= 0, 'expense': balance < 0 }">{{ balance | appCurrency }}</strong>
     </div>
 
   </div>
 
-  <div class="charts-row">
+  <div class="pie-section">
 
-    <div class="chart-section" *ngFor="let section of sections">
+    <div class="pie-header">
+      <h4>Income vs Expense</h4>
+      <button type="button" class="view-details-btn" routerLink="/dashboard/charts">View details</button>
+    </div>
 
-      <div class="chart-header">
-
-        <h4>{{ section.title }}</h4>
-
-        <div class="chart-controls">
-
-          <select
-            class="range-select"
-            [(ngModel)]="section.range"
-            (ngModelChange)="onRangeChange(section)">
-            <option *ngFor="let option of rangeOptions" [value]="option.key">{{ option.label }}</option>
-          </select>
-
-          <button type="button" class="share-btn" title="Share" (click)="openShareModal(section)">
-            <i class="fas fa-share-nodes"></i>
-          </button>
-
-        </div>
-
-        <ng-container *ngIf="section.range === 'custom'">
-          <div class="custom-range-row">
-            <input type="date" [(ngModel)]="section.customStart" (change)="onRangeChange(section)">
-            <input type="date" [(ngModel)]="section.customEnd" (change)="onRangeChange(section)">
-          </div>
-        </ng-container>
-
-      </div>
-
-      <div class="chart-card">
-        <canvas *ngIf="section.config" baseChart
-          [type]="section.config.type"
-          [data]="section.config.data"
-          [options]="section.config.options">
-        </canvas>
-      </div>
-
+    <div class="chart-card">
+      <canvas *ngIf="pieConfig" baseChart
+        [type]="pieConfig.type"
+        [data]="pieConfig.data"
+        [options]="pieConfig.options"
+        [plugins]="pieConfig.plugins ?? []">
+      </canvas>
+      <div class="pie-empty" *ngIf="!pieConfig">No income or expense recorded yet.</div>
     </div>
 
   </div>
@@ -84,13 +76,6 @@
       </div>
 
       <div class="goal-mini-pct">{{ goal.percentageProgress }}% complete</div>
-
-      <div class="goal-mini-stats">
-        <span>Saved: <strong>{{ goal.amountSaved }}</strong></span>
-        <span>Remaining: <strong>{{ goal.remainingAmount }}</strong></span>
-        <span>Target: <strong>{{ goal.targetAmount }}</strong></span>
-        <span>By: <strong>{{ goal.targetDate | date:'dd/MM/yyyy' }}</strong></span>
-      </div>
 
     </div>
 

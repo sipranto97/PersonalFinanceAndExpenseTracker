@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@ang
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { SUPPORTED_CURRENCIES, detectCurrency } from '../../utils/currency.util';
 
 @Component({
     selector: 'app-sign-up',
@@ -17,6 +18,8 @@ isLoading = false;
 
   signupForm!: any;
 
+  currencies = SUPPORTED_CURRENCIES;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -27,6 +30,7 @@ isLoading = false;
       {
         username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
+        currency: [detectCurrency(), Validators.required],
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', Validators.required]
       },
@@ -56,7 +60,8 @@ isLoading = false;
     const payload = {
       username: this.signupForm.value.email,
       fullName: this.signupForm.value.username,
-      password: this.signupForm.value.password
+      password: this.signupForm.value.password,
+      currency: this.signupForm.value.currency
     }
 
     this.authService.register(payload).subscribe(res => {

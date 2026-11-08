@@ -99,7 +99,8 @@ h1 {
 
 .field input[type="email"],
 .field input[type="text"],
-.field input[type="password"] {
+.field input[type="password"],
+.field select {
   width: 100%;
   height: 36px;
   padding: 0 10px;
@@ -112,12 +113,14 @@ h1 {
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.field input:focus {
+.field input:focus,
+.field select:focus {
   border-color: #534ab7;
   box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.12);
 }
 
-.field.has-error input {
+.field.has-error input,
+.field.has-error select {
   border-color: #e24b4a;
 }
 

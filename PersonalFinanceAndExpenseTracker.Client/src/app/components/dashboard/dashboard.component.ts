@@ -1,28 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../services/dashboard.service';
 import { SavingsGoalService } from '../../services/savings-goal.service';
-import { DATE_RANGE_OPTIONS, DateRangeKey, resolveDateRange } from '../../utils/date-range.util';
-import { buildExpenseChartConfig, buildIncomeChartConfig, buildOverviewChartConfig } from '../../utils/chart-config.util';
-import { ShareChartModalComponent } from '../share-chart-modal/share-chart-modal.component';
-import { ChartType } from '../../models/dashboard-chart.model';
+import { AccountService } from '../../services/account.service';
+import { CurrencyService } from '../../services/currency.service';
+import { buildIncomeExpensePieConfig } from '../../utils/chart-config.util';
+import { SUPPORTED_CURRENCIES } from '../../utils/currency.util';
 import { SavingsGoal } from '../../models/savings-goal.model';
-
-interface ChartSection {
-  chartType: ChartType;
-  title: string;
-  range: DateRangeKey;
-  customStart: string;
-  customEnd: string;
-  startDate: string;
-  endDate: string;
-  config: ChartConfiguration<any> | null;
-  fetch: (startDate: string, endDate: string) => Observable<any>;
-  buildConfig: (data: any) => ChartConfiguration<any>;
-}
 
 @Component({
     selector: 'app-dashboard',
@@ -30,64 +16,39 @@ interface ChartSection {
     styleUrl: './dashboard.component.css',
     standalone: false
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   userEmail: string = "";
   userFullName: string = "";
   totalIncome: number = 0;
   totalExpense: number = 0;
   balance: number = 0;
 
-  rangeOptions = DATE_RANGE_OPTIONS;
-
-  overview: ChartSection = {
-    chartType: 'Overview',
-    title: 'Financial Overview',
-    range: '30d',
-    customStart: '',
-    customEnd: '',
-    startDate: '',
-    endDate: '',
-    config: null,
-    fetch: (startDate, endDate) => this.dashboardService.getOverviewChart(startDate, endDate),
-    buildConfig: (data) => buildOverviewChartConfig(data)
-  };
-
-  expense: ChartSection = {
-    chartType: 'Expense',
-    title: 'Last 30 Days Expenses',
-    range: '30d',
-    customStart: '',
-    customEnd: '',
-    startDate: '',
-    endDate: '',
-    config: null,
-    fetch: (startDate, endDate) => this.dashboardService.getExpenseChart(startDate, endDate),
-    buildConfig: (data) => buildExpenseChartConfig(data)
-  };
-
-  income: ChartSection = {
-    chartType: 'Income',
-    title: 'Last 60 Days Income',
-    range: '60d',
-    customStart: '',
-    customEnd: '',
-    startDate: '',
-    endDate: '',
-    config: null,
-    fetch: (startDate, endDate) => this.dashboardService.getIncomeChart(startDate, endDate),
-    buildConfig: (data) => buildIncomeChartConfig(data)
-  };
-
-  sections: ChartSection[] = [this.overview, this.expense, this.income];
+  pieConfig: ChartConfiguration<any> | null = null;
 
   goals: SavingsGoal[] = [];
 
+  currencies = SUPPORTED_CURRENCIES;
+  selectedCurrency: string | null = null;
+  isSavingCurrency = false;
+
+  private currencySub?: Subscription;
+
   constructor(
-    private router: Router,
     private dashboardService: DashboardService,
     private savingsGoalService: SavingsGoalService,
-    private dialog: MatDialog
+    private accountService: AccountService,
+    private currencyService: CurrencyService,
+    private toastr: ToastrService
   ){}
+
+  // Shown once for accounts whose currency was auto-picked (e.g. first Google sign-in).
+  get showCurrencyPrompt(): boolean {
+    return this.currencyService.needsSetup;
+  }
+
+  get currencyCode(): string {
+    return this.currencyService.code;
+  }
 
   ngOnInit(): void {
     this.dashboardService.getUserInfo().subscribe(res => {
@@ -96,33 +57,17 @@ export class DashboardComponent implements OnInit {
     });
 
     this.loadSummary();
-    this.sections.forEach(section => this.loadSection(section));
+
+    // Re-label the pie if the currency arrives late or changes.
+    this.currencySub = this.currencyService.currency$.subscribe(() => this.buildPie());
 
     this.savingsGoalService.getActiveGoals().subscribe(res => {
       this.goals = res;
     });
   }
 
-  onRangeChange(section: ChartSection): void {
-    if (section.range === 'custom' && (!section.customStart || !section.customEnd)) {
-      return;
-    }
-
-    this.loadSection(section);
-  }
-
-  loadSection(section: ChartSection): void {
-    const { startDate, endDate } = resolveDateRange(section.range, {
-      startDate: section.customStart,
-      endDate: section.customEnd
-    });
-
-    section.startDate = startDate;
-    section.endDate = endDate;
-
-    section.fetch(startDate, endDate).subscribe(data => {
-      section.config = section.buildConfig(data);
-    });
+  ngOnDestroy(): void {
+    this.currencySub?.unsubscribe();
   }
 
   loadSummary(): void {
@@ -130,17 +75,31 @@ export class DashboardComponent implements OnInit {
       this.totalIncome = res.totalIncome;
       this.totalExpense = res.totalExpense;
       this.balance = res.balance;
+
+      this.buildPie();
     });
   }
 
-  openShareModal(section: ChartSection): void {
-    this.dialog.open(ShareChartModalComponent, {
-      width: '480px',
-      disableClose: true,
-      data: {
-        chartType: section.chartType,
-        startDate: section.startDate,
-        endDate: section.endDate
+  private buildPie(): void {
+    this.pieConfig = (this.totalIncome + this.totalExpense) > 0
+      ? buildIncomeExpensePieConfig(this.totalIncome, this.totalExpense, this.currencyService.code)
+      : null;
+  }
+
+  confirmCurrency(): void {
+    const code = this.selectedCurrency ?? this.currencyService.code;
+
+    this.isSavingCurrency = true;
+
+    this.accountService.updateProfile({ currency: code }).subscribe({
+      next: () => {
+        this.isSavingCurrency = false;
+        this.currencyService.set(code);
+        this.toastr.success('Currency saved. You can change it any time from your account.');
+      },
+      error: (err) => {
+        this.isSavingCurrency = false;
+        this.toastr.error(typeof err.error === 'string' ? err.error : 'Unable to save currency.');
       }
     });
   }

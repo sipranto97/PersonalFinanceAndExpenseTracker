@@ -96,6 +96,7 @@ namespace PersonalFinanceAndExpenseTracker.Services
                 OwnerName = !string.IsNullOrWhiteSpace(owner.FullName) ? owner.FullName : owner.Username,
                 StartDate = shareLink.StartDate,
                 EndDate = shareLink.EndDate,
+                Currency = owner.Currency,
                 ExpiresAt = shareLink.ExpiresAt,
                 Incomes = incomes
             };

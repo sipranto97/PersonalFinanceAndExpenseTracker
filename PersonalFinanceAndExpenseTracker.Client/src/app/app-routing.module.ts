@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardChartsComponent } from './components/dashboard-charts/dashboard-charts.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { IncomeComponent } from './components/income/income.component';
 import { RecurringIncomeComponent } from './components/recurring-income/recurring-income.component';
@@ -22,6 +23,12 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
     data: { title: 'Dashboard' },
+  },
+  {
+    path: 'dashboard/charts',
+    component: DashboardChartsComponent,
+    canActivate: [authGuard],
+    data: { title: 'Dashboard Charts' },
   },
   {
     path: 'sign-in',

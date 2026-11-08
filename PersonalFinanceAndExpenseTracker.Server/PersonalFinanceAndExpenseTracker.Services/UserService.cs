@@ -50,6 +50,8 @@ namespace PersonalFinanceAndExpenseTracker.Services
                 Id = user.Id,
                 HasPassword = user.Password != null,
                 ProfilePictureUrl = user.ProfilePictureUrl,
+                Currency = user.Currency,
+                NeedsCurrencySetup = user.NeedsCurrencySetup,
             };
 
             return response;
@@ -65,7 +67,21 @@ namespace PersonalFinanceAndExpenseTracker.Services
                 throw new KeyNotFoundException("User not found");
             }
 
-            user.FullName = model.FullName;
+            if (!string.IsNullOrWhiteSpace(model.FullName))
+            {
+                user.FullName = model.FullName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Currency))
+            {
+                if (!SupportedCurrencies.IsSupported(model.Currency))
+                {
+                    throw new ArgumentException("Unsupported currency.");
+                }
+
+                user.Currency = SupportedCurrencies.Normalize(model.Currency);
+                user.NeedsCurrencySetup = false;
+            }
 
             await _context.SaveChangesAsync();
         }

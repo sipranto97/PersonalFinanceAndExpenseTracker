@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../../services/account.service';
+import { CurrencyService } from '../../services/currency.service';
+import { SUPPORTED_CURRENCIES, detectCurrency } from '../../utils/currency.util';
 
 @Component({
     selector: 'app-account',
@@ -20,6 +22,8 @@ export class AccountComponent implements OnInit {
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
 
+  currencies = SUPPORTED_CURRENCIES;
+
   isSavingProfile = false;
   isChangingPassword = false;
   isUploadingPicture = false;
@@ -27,6 +31,7 @@ export class AccountComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private accountService: AccountService,
+    private currencyService: CurrencyService,
     private toastr: ToastrService
   ) {}
 
@@ -37,7 +42,8 @@ export class AccountComponent implements OnInit {
 
   initializeForms(): void {
     this.profileForm = this.fb.group({
-      fullName: ['', Validators.required]
+      fullName: ['', Validators.required],
+      currency: [detectCurrency(), Validators.required]
     });
 
     this.passwordForm = this.fb.group(
@@ -62,7 +68,7 @@ export class AccountComponent implements OnInit {
       this.username = res.username;
       this.hasPassword = res.hasPassword;
       this.profilePictureUrl = res.profilePictureUrl;
-      this.profileForm.patchValue({ fullName: res.fullName });
+      this.profileForm.patchValue({ fullName: res.fullName, currency: res.currency });
     });
   }
 
@@ -140,6 +146,7 @@ export class AccountComponent implements OnInit {
     this.accountService.updateProfile(this.profileForm.value).subscribe({
       next: () => {
         this.isSavingProfile = false;
+        this.currencyService.set(this.profileForm.value.currency);
         this.accountService.notifyProfileUpdated({
           fullName: this.profileForm.value.fullName,
           profilePictureUrl: this.profilePictureUrl

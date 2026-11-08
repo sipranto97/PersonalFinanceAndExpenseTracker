@@ -421,11 +421,19 @@ namespace PersonalFinanceAndExpenseTracker.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("text");
 
                     b.Property<string>("GoogleId")
                         .HasColumnType("text");
+
+                    b.Property<bool>("NeedsCurrencySetup")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Password")
                         .HasColumnType("text");

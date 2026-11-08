@@ -7,6 +7,8 @@ import { LoginResponseModel } from "../modals/login-response.model";
 //oAuth imports
 import { OAuthService } from 'angular-oauth2-oidc';
 import { googleAuthConfig } from "../config/google-auth.config";
+import { CurrencyService } from "./currency.service";
+import { detectCurrency } from "../utils/currency.util";
 
 const LOGGED_IN_FLAG = 'is_logged_in';
 
@@ -22,7 +24,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private oAuth: OAuthService) {
+    private oAuth: OAuthService,
+    private currencyService: CurrencyService) {
 
     this.oAuth.configure(googleAuthConfig);
   }
@@ -73,6 +76,7 @@ export class AuthService {
     this.csrfToken = null;
     this.currentUsername = null;
     this.currentFullName = null;
+    this.currencyService.reset();
     localStorage.removeItem(LOGGED_IN_FLAG);
   }
 
@@ -93,7 +97,10 @@ export class AuthService {
 
     const idToken = this.oAuth.getIdToken();
 
-    return this.http.post<LoginResponseModel>(`${this.baseUrl}/googleauth/login`, { idToken }, { withCredentials: true }).pipe(
+    // Only used by the API when this sign-in creates a brand-new account.
+    const currency = detectCurrency();
+
+    return this.http.post<LoginResponseModel>(`${this.baseUrl}/googleauth/login`, { idToken, currency }, { withCredentials: true }).pipe(
       switchMap(res => this.establishSession(res))
     );
   }

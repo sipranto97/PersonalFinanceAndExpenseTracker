@@ -33,6 +33,7 @@ export interface CreateChartShareLinkPayload {
 
 export interface SharedChartData {
   ownerName: string;
+  currency: string;
   chartType: ChartType;
   startDate: Date;
   endDate: Date;

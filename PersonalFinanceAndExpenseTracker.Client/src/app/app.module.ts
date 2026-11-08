@@ -11,6 +11,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthorizeInterceptor } from './services/authorize-interceptor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardChartsComponent } from './components/dashboard-charts/dashboard-charts.component';
+import { AppCurrencyPipe } from './pipes/app-currency.pipe';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { GoogleCallbackComponent } from './components/google-callback/google-callback.component';
@@ -47,6 +49,8 @@ import { SharedChartComponent } from './components/shared-chart/shared-chart.com
     SignInButtonGoogleComponent,
     SignInComponent,
     DashboardComponent,
+    DashboardChartsComponent,
+    AppCurrencyPipe,
     SignUpComponent,
     SidebarComponent,
     IncomeComponent,

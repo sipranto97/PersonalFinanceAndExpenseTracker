@@ -55,11 +55,11 @@ export class SharedChartComponent implements OnInit {
   private buildConfig(data: SharedChartData): ChartConfiguration<any> | null {
     switch (data.chartType) {
       case 'Overview':
-        return data.overview ? buildOverviewChartConfig(data.overview) : null;
+        return data.overview ? buildOverviewChartConfig(data.overview, data.currency) : null;
       case 'Expense':
-        return data.expense ? buildExpenseChartConfig(data.expense) : null;
+        return data.expense ? buildExpenseChartConfig(data.expense, data.currency) : null;
       case 'Income':
-        return data.income ? buildIncomeChartConfig(data.income) : null;
+        return data.income ? buildIncomeChartConfig(data.income, data.currency) : null;
     }
   }
 }

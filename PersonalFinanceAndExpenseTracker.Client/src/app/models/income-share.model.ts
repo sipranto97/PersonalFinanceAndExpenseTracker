@@ -12,6 +12,7 @@ export interface SharedIncomeItem {
 
 export interface SharedIncomeHistory {
   ownerName: string;
+  currency: string;
   startDate: Date;
   endDate: Date;
   expiresAt: Date | null;

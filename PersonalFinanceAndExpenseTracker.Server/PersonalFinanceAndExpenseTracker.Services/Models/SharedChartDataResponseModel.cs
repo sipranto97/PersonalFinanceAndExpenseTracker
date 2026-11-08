@@ -5,6 +5,7 @@ namespace PersonalFinanceAndExpenseTracker.Services.Models
     public class SharedChartDataResponseModel
     {
         public string OwnerName { get; set; }
+        public string Currency { get; set; } = "USD";
         public ChartType ChartType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
